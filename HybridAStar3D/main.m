@@ -22,10 +22,21 @@ timeVal = tic;
 toc(timeVal)
 elapsedTime = toc(timeVal);
 
+%B-spline
+for i = 1:size(waypoints,1)
+    x(i) = waypoints(i,1);
+    y(i) = waypoints(i,2);
+    z(i) = waypoints(i,3);
+end
+k = 4;
+[X,Y,Z] = Bspline(x,y,z,k);
+
 %figure
 figure(1)
 axis([1 max_x 1 max_y 1 max_z]);
-plot3(waypoints(:,1),waypoints(:,2),waypoints(:,3),'b','linewidth',2);
+plot3(waypoints(:,1),waypoints(:,2),waypoints(:,3),'b','linewidth',1);
+hold on
+plot3(X,Y,Z,'r','linewidth',1);
 hold on
 surf(display_data(1:100,1:100)','linestyle','none');
 plot3(20,20,10,'*');
