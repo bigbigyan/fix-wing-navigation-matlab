@@ -7,7 +7,7 @@ function expand_node = node_expand(current_state,target_state,max_x,max_y,max_z,
     x_current = current_state(1);
     y_current = current_state(2);
     z_current = current_state(3);
-    % yaw_current = current_state(4);
+    yaw_current = current_state(4);
 
     motion_primitives = generate_primitives(current_state,uav_property);
 
@@ -40,7 +40,9 @@ function expand_node = node_expand(current_state,target_state,max_x,max_y,max_z,
             end
             % height limited
             height_limited = z_next - display_data(x_node,y_node);
-            if height_limited > 10
+            if height_limited > 7
+                flag = 0;
+            elseif height_limited < 3
                 flag = 0;
             end
 
@@ -50,7 +52,9 @@ function expand_node = node_expand(current_state,target_state,max_x,max_y,max_z,
                 expand_node(expand_count,2) = y_next;
                 expand_node(expand_count,3) = z_next;
                 expand_node(expand_count,4) = yaw_next;
-                expand_node(expand_count,5) = g_cost + 8 * (1/z_next) + ...
+                % expand_node(expand_count,5) = g_cost + 8 * (1/z_next) + ...
+                %     sqrt((x_next - x_current)^2 + (y_next - y_current)^2 + (z_next - z_current)^2);
+                expand_node(expand_count,5) = g_cost + 0.1*z_next + 0.08*abs(yaw_next - yaw_current) + ...
                     sqrt((x_next - x_current)^2 + (y_next - y_current)^2 + (z_next - z_current)^2);
                 expand_node(expand_count,6) = HeuristicCost(next_state,target_state,uav_property);
                 expand_node(expand_count,7) = expand_node(expand_count,5) + expand_node(expand_count,6);
