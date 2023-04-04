@@ -4,7 +4,7 @@ load("Makedata.mat");
 
 % satrt and goal point
 startpoint = [20,20,10,0];  % x,y,z,yaw  unit: 10m
-goalpoint = [90,70,10,pi/2];
+goalpoint = [90,70,8,pi/2];
 
 % property of fix-wing
 cruise_velocity = 20; % unit: m/s
@@ -31,7 +31,7 @@ end
 k = 4;
 [X,Y,Z] = Bspline(x,y,z,k);
 
-optimal_points = optimal(waypoints);
+optimal_points = global_optimal(waypoints);
 %B-spline
 for i = 1:size(optimal_points,1)
     x(i) = optimal_points(i,1);
@@ -107,7 +107,7 @@ hold on
 % hold on
 surf(display_data(1:100,1:100)','linestyle','none');
 plot3(20,20,10,'*');
-plot3(90,70,10,'^');
+plot3(90,70,8,'^');
 legend('regular cruise','maximise range','maximise endurance','height','star point','goal point');
 set(gca,'xticklabel','');
 set(gca,'yticklabel','');
